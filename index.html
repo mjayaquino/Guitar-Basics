@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Basics - Learn Guitar Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        header {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 2rem;
+            border-bottom: 4px solid #fbbf24;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: #fbbf24;
+        }
+
+        header p {
+            color: #d1d5db;
+            font-size: 1.1rem;
+        }
+
+        nav {
+            background-color: #e5e7eb;
+            border-bottom: 2px solid #000000;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav button {
+            padding: 1rem 1.5rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            background-color: #e5e7eb;
+            color: #000000;
+            border-bottom: 4px solid #d1d5db;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        nav button:hover {
+            background-color: #d1d5db;
+        }
+
+        nav button.active {
+            background-color: #fbbf24;
+            border-bottom: 4px solid #000000;
+            color: #000000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #000000;
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Definitions */
+        .definitions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .definition-card {
+            background-color: #f3f4f6;
+            padding: 1.5rem;
+            border-left: 4px solid #fbbf24;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .definition-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .definition-card h3 {
+            color: #000000;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .definition-card p {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        /* Chords */
+        .chord-item {
+            border: 2px solid #000000;
+            background-color: #ffffff;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .chord-header {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chord-header:hover {
+            background-color: #1f2937;
+        }
+
+        .chord-name {
+            text-align: left;
+        }
+
+        .chord-code {
+            font-size: 2rem;
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        .chord-label {
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .difficulty-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .difficulty-easy {
+            background-color: #22c55e;
+            color: #ffffff;
+        }
+
+        .difficulty-medium {
+            background-color: #fbbf24;
+            color: #000000;
+        }
+
+        .chord-content {
+            display: none;
+            padding: 1.5rem;
+            background-color: #ffffff;
+        }
+
+        .chord-content.show {
+            display: block;
+        }
+
+        .chord-diagram {
+            background-color: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 4px;
+            border: 2px solid #fbbf24;
+            margin-top: 1rem;
+        }
+
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .string {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .string-label {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .fret {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            margin-bottom: 0.25rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .fret.active {
+            background-color: #fbbf24;
+            border-color: #000000;
+            color: #000000;
+        }
+
+        /* Guitar Parts */
+        .parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .part-card {
+            border: 2px solid #9ca3af;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            transition: all 0.3s;
+        }
+
+        .part-card:hover {
+            background-color: #f3f4f6;
+        }
+
+        .part-card h3 {
+            color: #000000;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .part-card p {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .diagram-box {
+            background-color: #f3f4f6;
+            padding: 2rem;
+            border: 2px solid #000000;
+            border-radius: 4px;
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+
+        .diagram-box pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #000000;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        /* Tips */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .tip-card {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .tip-card:hover {
+            background-color: #fffbeb;
+        }
+
+        .tip-number {
+            color: #fbbf24;
+            font-weight: bold;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .tip-text {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .first-week {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 2rem;
+            border-radius: 4px;
+            border: 2px solid #fbbf24;
+            margin-top: 2rem;
+        }
+
+        .first-week h3 {
+            color: #fbbf24;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .first-week ul {
+            list-style: none;
+            space-y: 1rem;
+        }
+
+        .first-week li {
+            padding: 0.75rem 0;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Trivia */
+        .trivia-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .trivia-card {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            border-left: 8px solid #fbbf24;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .trivia-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .trivia-card p {
+            color: #374151;
+            line-height: 1.8;
+        }
+
+        footer {
+            background-color: #000000;
+            color: #ffffff;
+            text-align: center;
+            padding: 2rem;
+            border-top: 4px solid #fbbf24;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        .footer-main {
+            color: #d1d5db;
+            font-size: 1rem;
+        }
+
+        .footer-sub {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .pro-tip {
+            background-color: #fef3c7;
+            border: 2px solid #fbbf24;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-top: 2rem;
+        }
+
+        .pro-tip h3 {
+            color: #000000;
+            margin-bottom: 0.5rem;
+        }
+
+        .pro-tip p {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            nav button {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎸 Guitar Basics</h1>
+        <p>Your complete guide to learning guitar from scratch</p>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" onclick="showSection('definitions')">📚 Definitions</button>
+        <button class="nav-btn" onclick="showSection('chords')">⚡ Basic Chords</button>
+        <button class="nav-btn" onclick="showSection('parts')">🎵 Guitar Parts</button>
+        <button class="nav-btn" onclick="showSection('tips')">💡 Tips</button>
+        <button class="nav-btn" onclick="showSection('trivia')">🎸 Trivia</button>
+    </nav>
+
+    <div class="container">
+        <!-- DEFINITIONS SECTION -->
+        <section id="definitions" class="section active">
+            <h2>🎵 Guitar Terminology</h2>
+            <div class="definitions-grid">
+                <div class="definition-card">
+                    <h3>Chord</h3>
+                    <p>Three or more notes played together to create harmony.</p>
+                </div>
+                <div class="definition-card">
+                    <h3>Fret</h3>
+                    <p>Metal wires on the fretboard that divide it into semitones.</p>
+                </div>
+                <div class="definition-card">
+                    <h3>Strumming</h3>
+                    <p>Running your pick or fingers across multiple strings at once.</p>
+                </div>
+                <div class="definition-card">
+                    <h3>Tuning</h3>
+                    <p>Adjusting string tension to match standard pitch (E-A-D-G-B-E).</p>
+                </div>
+                <div class="definition-card">
+                    <h3>Barre Chord</h3>
+                    <p>A chord where one finger presses multiple strings on the same fret.</p>
+                </div>
+                <div class="definition-card">
+                    <h3>Capo</h3>
+                    <p>A device that clamps across strings to raise the pitch of all strings.</p>
+                </div>
+                <div class="definition-card">
+                    <h3>Transpose</h3>
+                    <p>Moving a song to a different key while keeping the same intervals.</p>
+                </div>
+                <div class="definition-card">
+                    <h3>Fingerstyle</h3>
+                    <p>Playing by plucking strings with your fingers instead of a pick.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHORDS SECTION -->
+        <section id="chords" class="section">
+            <h2>⚡ Essential Beginner Chords</h2>
+            
+            <div class="chord-item">
+                <div class="chord-header" onclick="toggleChord(this)">
+                    <div class="chord-name">
+                        <div class="chord-code">G</div>
+                        <div class="chord-label">G Major</div>
+                    </div>
+                    <span class="difficulty-badge difficulty-medium">Medium</span>
+                </div>
+                <div class="chord-content">
+                    <p>A full, bright sound. Requires finger strength.</p>
+                    <div class="chord-diagram">
+                        <div class="diagram-grid">
+                            <div class="string">
+                                <div class="string-label">E</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret active">3</div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">A</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">D</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">G</div>
+                                <div class="fret"></div>
+                                <div class="fret active">2</div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">B</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret active">3</div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">e</div>
+                                <div class="fret"></div>
+                                <div class="fret active">2</div>
+                                <div class="fret"></div>
+                            </div>
+                        </div>
+                        <p><strong>Yellow circles show finger positions.</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chord-item">
+                <div class="chord-header" onclick="toggleChord(this)">
+                    <div class="chord-name">
+                        <div class="chord-code">D</div>
+                        <div class="chord-label">D Major</div>
+                    </div>
+                    <span class="difficulty-badge difficulty-easy">Easy</span>
+                </div>
+                <div class="chord-content">
+                    <p>Clear, ringing tone. Great for beginners.</p>
+                    <div class="chord-diagram">
+                        <div class="diagram-grid">
+                            <div class="string">
+                                <div class="string-label">E</div>
+                                <div class="fret"></div>
+                                <div class="fret active">2</div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">A</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">D</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">G</div>
+                                <div class="fret"></div>
+                                <div class="fret active">2</div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">B</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret active">3</div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">e</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                        </div>
+                        <p><strong>Yellow circles show finger positions.</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chord-item">
+                <div class="chord-header" onclick="toggleChord(this)">
+                    <div class="chord-name">
+                        <div class="chord-code">Am</div>
+                        <div class="chord-label">A Minor</div>
+                    </div>
+                    <span class="difficulty-badge difficulty-easy">Easy</span>
+                </div>
+                <div class="chord-content">
+                    <p>One of the easiest chords. Perfect starting point.</p>
+                    <div class="chord-diagram">
+                        <div class="diagram-grid">
+                            <div class="string">
+                                <div class="string-label">E</div>
+                                <div class="fret active">1</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">A</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">D</div>
+                                <div class="fret"></div>
+                                <div class="fret active">2</div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">G</div>
+                                <div class="fret"></div>
+                                <div class="fret active">2</div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">B</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">e</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                        </div>
+                        <p><strong>Yellow circles show finger positions.</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chord-item">
+                <div class="chord-header" onclick="toggleChord(this)">
+                    <div class="chord-name">
+                        <div class="chord-code">Em</div>
+                        <div class="chord-label">E Minor</div>
+                    </div>
+                    <span class="difficulty-badge difficulty-easy">Easy</span>
+                </div>
+                <div class="chord-content">
+                    <p>Dark, melancholic sound. Very beginner-friendly.</p>
+                    <div class="chord-diagram">
+                        <div class="diagram-grid">
+                            <div class="string">
+                                <div class="string-label">E</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">A</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">D</div>
+                                <div class="fret"></div>
+                                <div class="fret active">2</div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">G</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">B</div>
+                                <div class="fret"></div>
+                                <div class="fret active">2</div>
+                                <div class="fret"></div>
+                            </div>
+                            <div class="string">
+                                <div class="string-label">e</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                        </div>
+                        <p><strong>Yellow circles show finger positions.</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pro-tip">
+                <h3>💡 Pro Tip</h3>
+                <p>Master Am and Em first—they're the easiest chords and require only two fingers each. Practice switching between them until it becomes automatic, then move to D and G.</p>
+            </div>
+        </section>
+
+        <!-- GUITAR PARTS SECTION -->
+        <section id="parts" class="section">
+            <h2>🎵 Parts of the Guitar</h2>
+            <div class="parts-grid">
+                <div class="part-card">
+                    <h3>Headstock</h3>
+                    <p>Top of the guitar, holds the tuning pegs.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Tuning Pegs</h3>
+                    <p>Used to adjust the pitch of each string.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Nut</h3>
+                    <p>Guides strings to the headstock.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Fretboard</h3>
+                    <p>The long wooden surface with metal frets.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Frets</h3>
+                    <p>Metal lines that divide the fretboard into semitones.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Body</h3>
+                    <p>Main resonating chamber of the guitar.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Soundhole</h3>
+                    <p>Allows sound to project outward.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Strings</h3>
+                    <p>Six metal strings that vibrate to produce sound.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Bridge</h3>
+                    <p>Holds strings in place on the body.</p>
+                </div>
+                <div class="part-card">
+                    <h3>Pickups (Electric)</h3>
+                    <p>Converts string vibrations to electrical signals.</p>
+                </div>
+            </div>
+
+            <div class="diagram-box">
+                <h3>Guitar Diagram</h3>
+                <pre>
+        Tuning Pegs (Headstock)
+              ║
+         🔴🔴🔴
+         🔴🔴🔴  ← Tuning Pegs
+              ║
+         ◆◆◆◆◆◆ ← Nut
+              ║
+    Fretboard ║ Frets (Metal lines)
+    (Wooden  ║  1st fret
+     surface)║  2nd fret
+              ║  3rd fret
+        ┌─────║─────┐
+        │ ═══║═══ │ ← Strings (6 total)
+        │     ║     │   Tuning: E-A-D-G-B-e
+    Body│     ║     │
+        │  ◉  ║     │ ← Soundhole
+        │     ║     │   (Acoustic)
+        │ ═══║═══ │
+        └─────║─────┘
+              ║
+            Bridge ← Holds strings in place
+                </pre>
+            </div>
+        </section>
+
+        <!-- TIPS SECTION -->
+        <section id="tips" class="section">
+            <h2>💡 Pro Tips for Beginners</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-number">1</div>
+                    <p class="tip-text">Practice finger placement before strumming to build muscle memory.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">2</div>
+                    <p class="tip-text">Start with open chords (Am, Em, D, G) as they use fewer fingers.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">3</div>
+                    <p class="tip-text">Keep your wrist straight and relaxed to avoid injury.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">4</div>
+                    <p class="tip-text">Use a metronome to develop consistent rhythm and timing.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">5</div>
+                    <p class="tip-text">Practice chord transitions slowly before speeding up.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">6</div>
+                    <p class="tip-text">Keep your nails short on fretting hand for clean notes.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">7</div>
+                    <p class="tip-text">Tune your guitar regularly—an out-of-tune guitar frustrates beginners.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">8</div>
+                    <p class="tip-text">Practice 20-30 minutes daily instead of long irregular sessions.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">9</div>
+                    <p class="tip-text">Watch your hand position in a mirror to build good habits.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-number">10</div>
+                    <p class="tip-text">Play songs you love to stay motivated and engaged.</p>
+                </div>
+            </div>
+
+            <div class="first-week">
+                <h3>🎯 Your First Week</h3>
+                <ul>
+                    <li><strong>Day 1-2:</strong> Learn chord shapes for Am and Em without strumming</li>
+                    <li><strong>Day 3-4:</strong> Practice switching between Am and Em</li>
+                    <li><strong>Day 5-6:</strong> Add D chord, practice Am-D-Am transitions</li>
+                    <li><strong>Day 7+:</strong> Learn a simple 3-chord song (Am-D-G pattern)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- TRIVIA SECTION -->
+        <section id="trivia" class="section">
+            <h2>🎸 Guitar Trivia & Facts</h2>
+            <div class="trivia-list">
+                <div class="trivia-card">
+                    <p>The standard tuning (E-A-D-G-B-E) has been used since the 1500s.</p>
+                </div>
+                <div class="trivia-card">
+                    <p>Steel-string guitars were invented in the early 1900s.</p>
+                </div>
+                <div class="trivia-card">
+                    <p>Jimi Hendrix could play the guitar behind his head and with his teeth!</p>
+                </div>
+                <div class="trivia-card">
+                    <p>The first electric guitar was created in 1931.</p>
+                </div>
+                <div class="trivia-card">
+                    <p>A guitar has 18-24 frets on average, but some have up to 36.</p>
+                </div>
+                <div class="trivia-card">
+                    <p>Classical guitars use nylon strings, while acoustic guitars use steel.</p>
+                </div>
+                <div class="trivia-card">
+                    <p>The oldest surviving guitar is from 1581 and is kept in a museum.</p>
+                </div>
+                <div class="trivia-card">
+                    <p>Legends like Eric Clapton and Eddie Van Halen started from basic chords.</p>
+                </div>
+                <div class="trivia-card">
+                    <p>A guitar string vibrates about 100 times per second for a middle note.</p>
+                </div>
+                <div class="trivia-card">
+                    <p>The guitar body's shape affects how sound resonates and projects.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p class="footer-main">🎸 Keep practicing and enjoy the journey of learning guitar!</p>
+        <p class="footer-sub">Made with passion for beginner guitarists</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function toggleChord(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('show');
+        }
+    </script>
+</body>
+</html>
+```
